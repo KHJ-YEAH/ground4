@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)file:///C:/Users/hdec/Downloads/high5_m4_exec.html -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HIGH-5 · 성장과 육성</title>
+<link href="./HIGH-5 · 성장과 육성_files/css2" rel="stylesheet">
+<style>
+:root{
+  --navy:#08111F;--navy2:#0F1E35;--navy3:#162840;
+  --gold:#F0A500;--gold2:#FFD166;
+  --m4:#10B981;--m4l:#ECFDF5;--m4d:#047857;--m4mid:#6EE7B7;--m4warm:#D1FAE5;
+  --bg:#F0F4F8;--card:#fff;--text:#0F172A;--sub:#475569;--muted:#94A3B8;--border:#E2E8F0;
+  --db-h:172px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);padding-top:var(--db-h);transition:padding-top .35s ease}
+
+/* ═══ DASHBOARD ══════════════════════════════ */
+.dashboard{position:fixed;top:0;left:0;right:0;z-index:500;background:linear-gradient(160deg,#060E1A 0%,#0C1B30 55%,#071525 100%);border-bottom:1px solid rgba(255,255,255,.08);box-shadow:0 6px 40px rgba(0,0,0,.5);transition:transform .35s ease}
+.dashboard.hidden{transform:translateY(-100%)}
+.db-inner{max-width:100%;margin:0 auto;padding:0 32px}
+.db-topbar{display:flex;align-items:center;gap:14px;padding:9px 0;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.06)}
+.db-back{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.8);font-size:13px;font-weight:700;padding:6px 14px;border-radius:7px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;flex-shrink:0}
+.db-brand-main{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:1.5px;color:#fff}
+.db-brand-main span{color:var(--gold)}
+.db-brand-sub{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1px;margin-top:1px}
+.db-cells{display:grid;grid-template-columns:repeat(6,1fr);gap:0}
+.dbc{padding:9px 14px;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;justify-content:center}
+.dbc:last-child{border-right:none}
+.dbc-lbl{font-size:11px;font-weight:700;letter-spacing:.4px;color:rgba(255,255,255,.38);margin-bottom:2px;white-space:nowrap}
+.dbc-val{font-size:28px;font-weight:900;line-height:1;letter-spacing:-1px}
+.u{font-size:13px;font-weight:600;color:rgba(255,255,255,.45);letter-spacing:0;margin-left:1px}
+.dbc-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px;white-space:nowrap}
+.gold-v{color:var(--gold)}
+.s-row{display:flex;gap:3px;margin-top:4px}
+.sd{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;background:rgba(255,255,255,.07);color:rgba(255,255,255,.3)}
+.sd.on{background:var(--gold);color:var(--navy)}
+.sd.today{background:rgba(240,165,0,.22);color:var(--gold);border:1.5px solid var(--gold)}
+.db-mis{padding:9px 12px;border-right:1px solid rgba(255,255,255,.07)}
+.db-mis-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,.38);margin-bottom:5px}
+.mi-list{display:flex;flex-direction:column;gap:3px}
+.mi{display:flex;align-items:center}
+.mi-chk{width:17px;height:17px;border-radius:50%;background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:8px;color:transparent;transition:all .2s;flex-shrink:0}
+.mi-chk.done{background:var(--m4);border-color:var(--m4);color:#fff}
+.mi-txt{font-size:12px;color:rgba(255,255,255,.7);flex:1;padding-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mi-pts{font-size:12px;font-weight:700;color:var(--gold2);text-align:right;padding-left:10px;white-space:nowrap;flex-shrink:0;min-width:52px}
+.dbc-prog{padding:9px 12px;border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;justify-content:center;position:relative}
+.db-pbar{height:6px;background:rgba(255,255,255,.1);border-radius:3px;margin:5px 0 3px;overflow:hidden}
+.db-pfill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--m4),var(--m4mid))}
+.db-pbtn{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);background:none;border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:2px 8px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;display:inline-block;width:fit-content;margin-top:2px}
+.db-pbtn:hover{color:var(--m4mid);border-color:rgba(16,185,129,.3)}
+.prog-inline{display:none;position:absolute;top:100%;left:0;right:0;background:var(--navy2);border:1px solid rgba(255,255,255,.1);border-radius:0 0 10px 10px;padding:10px 14px;z-index:600;box-shadow:0 8px 32px rgba(0,0,0,.45)}
+.prog-inline.open{display:block}
+.pil-title{font-size:10px;font-weight:700;letter-spacing:1.5px;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:8px}
+.pil-row{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.pil-row:last-child{margin-bottom:0}
+.pil-lbl{font-size:11px;color:rgba(255,255,255,.5);min-width:66px;flex-shrink:0}
+.pil-bw{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.pil-bf{height:100%;border-radius:3px}
+.pil-pct{font-size:11px;font-weight:700;color:rgba(255,255,255,.65);min-width:30px;text-align:right}
+.db-leader{padding:9px 12px;background:rgba(239,68,68,.05);border-left:1px solid rgba(239,68,68,.12)}
+.db-leader-lbl{font-size:11px;font-weight:700;color:rgba(255,120,120,.5);margin-bottom:4px}
+.lm-row{display:flex;align-items:center;gap:6px;padding:2px 0;font-size:12px;color:rgba(255,255,255,.65)}
+.lm-av{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.13);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.lm-st{margin-left:auto;font-size:11px;font-weight:700}
+.lm-done{color:#34D399}.lm-todo{color:rgba(255,140,140,.8)}
+.nudge-btn{width:100%;margin-top:5px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.25);color:rgba(255,160,160,.85);font-size:11px;font-weight:700;padding:5px;border-radius:6px;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+
+/* ═══ MAIN ══════════════════════════════════ */
+.main{width:100%;padding:22px 32px 80px}
+.db-toggle-wrap{display:flex;justify-content:center;margin-bottom:16px}
+.db-toggle-btn{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:rgba(255,255,255,.7);font-size:12px;font-weight:700;padding:7px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.12);cursor:pointer;font-family:'Noto Sans KR',sans-serif;box-shadow:0 2px 12px rgba(0,0,0,.2);transition:all .2s}
+.db-toggle-btn:hover{background:var(--navy3);color:#fff}
+.page-hero{background:var(--navy);border-radius:16px;padding:26px 40px;margin-bottom:22px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.page-hero::after{content:'MONTH 4';font-family:'Bebas Neue',sans-serif;font-size:160px;position:absolute;right:-10px;bottom:-20px;color:rgba(255,255,255,.025);line-height:1;pointer-events:none}
+.ph-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:var(--m4mid);font-size:10px;font-weight:700;letter-spacing:2px;padding:4px 12px;border-radius:999px;margin-bottom:12px;text-transform:uppercase}
+.ph-badge::before{content:'●';font-size:6px;animation:blink 2s infinite}
+.ph-month-title{font-size:28px;font-weight:900;color:#fff;margin-bottom:8px}
+.ph-keymsg{display:inline-block;font-size:18px;font-weight:700;color:var(--gold2);background:rgba(240,165,0,.1);border-left:4px solid var(--gold);padding:10px 18px;border-radius:0 10px 10px 0}
+.week-nav{display:flex;gap:8px;margin-bottom:26px}
+.wn-btn{flex:1;padding:13px 8px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;font-family:'Noto Sans KR',sans-serif;text-align:center}
+.wn-btn:hover{border-color:var(--m4mid);color:var(--m4d)}
+.wn-btn.active{background:var(--m4);color:#fff;border-color:var(--m4);box-shadow:0 4px 14px rgba(16,185,129,.35)}
+.wn-sub{font-size:11px;font-weight:500;opacity:.8;display:block;margin-top:2px}
+.week-panel{display:none;animation:fadeUp .28s ease}
+.week-panel.active{display:block}
+.sec-label{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.card-intro{background:var(--card);border-radius:12px;border:1px solid var(--border);padding:16px 22px;margin-bottom:18px;font-size:15px;color:var(--sub);line-height:1.8}
+.card-intro strong{color:var(--text)}
+
+/* person photo */
+.person-photo{width:52px;height:52px;border-radius:50%;overflow:hidden;flex-shrink:0;border:3px solid #fff;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.person-photo svg{width:100%;height:100%}
+
+/* ─── WEEK 1 : 리더 성장 루트 ───────────── */
+.w1-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.leader-card{background:var(--card);border-radius:14px;border:1px solid var(--border);overflow:hidden;transition:box-shadow .2s}
+.leader-card:hover{box-shadow:0 6px 22px rgba(0,0,0,.09)}
+.lc-top-bar{height:6px}
+.lc-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;background:#FAFBFD}
+.lc-name{font-size:18px;font-weight:900;color:var(--text)}
+.lc-role{font-size:12px;color:var(--muted);margin-top:2px}
+.lc-body{padding:16px 18px}
+.lc-section{margin-bottom:14px}
+.lc-section:last-child{margin-bottom:0}
+.lc-s-label{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.lc-msg{font-size:14px;color:var(--text);line-height:1.85;background:var(--m4l);border-left:3px solid var(--m4);padding:12px 14px;border-radius:0 9px 9px 0;font-weight:500}
+.route-items{display:flex;flex-direction:column;gap:6px}
+.route-item{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border)}
+.ri-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.ri-type{font-size:10px;font-weight:700;color:var(--m4d);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px}
+.ri-text{font-size:13px;color:var(--sub);line-height:1.6}
+.lc-footer{padding:10px 18px;background:#F8FAFB;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.like-btn{display:flex;align-items:center;gap:3px;font-size:13px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'Noto Sans KR',sans-serif;font-weight:600;padding:4px 8px;border-radius:6px;transition:all .15s}
+.like-btn:hover,.like-btn.liked{color:#EF4444;background:rgba(239,68,68,.07)}
+.cmt-btn{display:flex;align-items:center;gap:3px;font-size:13px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'Noto Sans KR',sans-serif;font-weight:600;padding:4px 8px;border-radius:6px;transition:all .15s}
+.cmt-btn:hover{color:var(--m4d);background:var(--m4l)}
+.cmt-area{border-top:1px solid var(--border);padding:12px 18px;display:none;background:#F8FFFC}
+.cmt-area.open{display:block}
+.cmt-item{font-size:13px;color:var(--sub);padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;line-height:1.6}
+.cmt-item:last-child{border-bottom:none}
+.ci-av{width:22px;height:22px;border-radius:50%;background:var(--m4l);color:var(--m4d);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.cmt-irow{display:flex;gap:7px;margin-top:8px}
+.cmt-input{flex:1;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'Noto Sans KR',sans-serif;outline:none}
+.cmt-input:focus{border-color:var(--m4)}
+.cmt-send{background:var(--m4);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+
+/* ─── WEEK 2 : 성장 목표 릴레이 ────────── */
+.w2-layout{display:grid;grid-template-columns:320px 1fr;gap:18px;align-items:start}
+.w2-leader-panel{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;position:sticky;top:calc(var(--db-h) + 14px)}
+.w2lp-head{background:var(--navy);padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.w2lp-tag{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--m4mid);text-transform:uppercase;margin-bottom:4px}
+.w2lp-title{font-size:16px;font-weight:800;color:#fff}
+.lmi{border-bottom:1px solid var(--border);padding:16px 20px}
+.lmi:last-child{border-bottom:none}
+.lmi-role{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.lmi-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.lmi-name{font-size:14px;font-weight:800;color:var(--text);margin-bottom:8px}
+.lmi-msg{font-size:15px;font-weight:600;color:var(--text);line-height:1.8;background:var(--m4l);border-left:4px solid var(--m4);padding:12px 15px;border-radius:0 9px 9px 0;font-style:italic}
+
+/* growth board */
+.growth-board{background:linear-gradient(160deg,#064E3B,#065F46,#047857);border-radius:14px;border:2px solid #059669;overflow:hidden;box-shadow:0 4px 20px rgba(4,120,87,.2)}
+.gb-header{padding:14px 22px;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.gb-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:rgba(255,255,255,.7);white-space:nowrap}
+.gb-prog-wrap{display:flex;flex-direction:column;gap:4px;min-width:160px;max-width:200px;flex:0 0 auto}
+.gb-prog-top{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:rgba(255,255,255,.7)}
+.gb-prog-bar{height:10px;background:rgba(255,255,255,.1);border-radius:5px;overflow:hidden;display:flex}
+.gb-seg{height:100%}
+.gb-body{padding:16px 22px;max-height:400px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent;display:flex;flex-direction:column;gap:10px}
+.gb-body::-webkit-scrollbar{width:4px}
+.gb-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+.goal-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px;animation:fadeUp .3s ease both}
+.goal-card:hover{background:rgba(255,255,255,.12)}
+.gc-num{font-family:'Bebas Neue',sans-serif;font-size:22px;color:rgba(255,255,255,.2);margin-bottom:4px}
+.gc-msg{font-size:15px;color:rgba(255,255,255,.9);line-height:1.75;font-style:italic;margin-bottom:8px}
+.gc-bottom{display:flex;align-items:center;gap:10px}
+.gc-tag{font-size:10px;font-weight:700;padding:2px 9px;border-radius:999px;background:rgba(16,185,129,.2);color:var(--m4mid);letter-spacing:.5px}
+.gc-like{background:none;border:none;cursor:pointer;font-size:12px;color:rgba(255,255,255,.3);padding:3px 8px;border-radius:6px;transition:all .15s;display:flex;align-items:center;gap:3px;margin-left:auto}
+.gc-like:hover,.gc-like.on{color:var(--m4mid);background:rgba(16,185,129,.15)}
+.gb-input-area{padding:14px 22px;background:rgba(0,0,0,.2);border-top:1px solid rgba(255,255,255,.1)}
+.gb-next{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:8px}
+.gb-next strong{color:rgba(255,255,255,.85)}
+.gb-irow{display:flex;gap:8px}
+.gb-input{flex:1;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:9px;padding:11px 16px;font-size:14px;color:#fff;font-family:'Noto Sans KR',sans-serif;outline:none}
+.gb-input:focus{border-color:rgba(16,185,129,.5)}
+.gb-input::placeholder{color:rgba(255,255,255,.25)}
+.gb-send{background:var(--m4);color:#fff;border:none;border-radius:9px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+.gb-nominate{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);border-radius:9px;padding:11px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap}
+/* capsule bar at bottom */
+.gb-capsule-bar{padding:10px 22px;background:rgba(0,0,0,.3);border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(255,255,255,.45)}
+.gcb-icon{font-size:16px}
+.gcb-count{font-size:13px;font-weight:700;color:var(--m4mid)}
+
+/* ─── WEEK 3 : 베스트 지식 공유 ─────────── */
+.w3-submit-area{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:22px 26px;margin-bottom:18px}
+.w3-sa-title{font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px}
+.w3-sa-desc{font-size:14px;color:var(--sub);margin-bottom:14px;line-height:1.7}
+.w3-input-wrap{position:relative}
+.w3-prefix{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:15px;font-weight:700;color:var(--m4d);white-space:nowrap;pointer-events:none}
+.w3-input{width:100%;border:2px solid var(--border);border-radius:10px;padding:14px 16px 14px 200px;font-size:15px;font-family:'Noto Sans KR',sans-serif;color:var(--text);outline:none;transition:border .2s}
+.w3-input:focus{border-color:var(--m4)}
+.w3-suffix{margin-top:8px;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--sub)}
+.w3-suffix input{border:2px solid var(--border);border-radius:8px;padding:8px 12px;font-size:14px;font-family:'Noto Sans KR',sans-serif;color:var(--text);outline:none;flex:1}
+.w3-suffix input:focus{border-color:var(--m4)}
+.w3-submit-btn{width:100%;margin-top:12px;background:var(--m4);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .18s}
+.w3-submit-btn:hover{background:var(--m4d)}
+
+/* knowledge cards grid */
+.knowledge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.kn-card{background:var(--card);border-radius:12px;border:1.5px solid var(--border);overflow:hidden;transition:box-shadow .2s;cursor:pointer}
+.kn-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.08)}
+.kn-card.top-vote{border-color:var(--m4);box-shadow:0 0 0 2px var(--m4l),0 4px 18px rgba(16,185,129,.15)}
+.kn-card.top-vote .kn-header{background:linear-gradient(135deg,var(--m4d),var(--m4))}
+.kn-header{padding:12px 16px;background:var(--m4l);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.kn-card.top-vote .kn-header{border-bottom:none}
+.kn-top-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--gold);color:var(--navy)}
+.kn-card.top-vote .kn-top-badge{background:rgba(255,255,255,.25);color:#fff}
+.kn-anon{font-size:12px;color:var(--muted);margin-left:auto}
+.kn-card.top-vote .kn-anon{color:rgba(255,255,255,.6)}
+.kn-body{padding:14px 16px}
+.kn-subject{font-size:11px;font-weight:700;color:var(--m4d);letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+.kn-card.top-vote .kn-subject{color:rgba(255,255,255,.7)}
+.kn-text{font-size:14px;font-weight:600;color:var(--text);line-height:1.7;margin-bottom:4px}
+.kn-card.top-vote .kn-text{color:#fff;font-size:15px}
+.kn-detail{font-size:12.5px;color:var(--sub);line-height:1.65}
+.kn-card.top-vote .kn-detail{color:rgba(255,255,255,.65)}
+.kn-footer{padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;background:#FAFBFD}
+.kn-card.top-vote .kn-footer{background:rgba(0,0,0,.15);border-top-color:rgba(255,255,255,.1)}
+.vote-count{font-size:12px;font-weight:700;color:var(--m4d)}
+.kn-card.top-vote .vote-count{color:var(--m4mid)}
+.vote-btn{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:5px 12px;border-radius:7px;border:1.5px solid var(--border);cursor:pointer;background:#fff;color:var(--sub);font-family:'Noto Sans KR',sans-serif;transition:all .15s;margin-left:auto}
+.vote-btn:hover,.vote-btn.voted{border-color:var(--m4);background:var(--m4l);color:var(--m4d)}
+.kn-card.top-vote .vote-btn{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff}
+.kn-card.top-vote .vote-btn:hover,.kn-card.top-vote .vote-btn.voted{background:rgba(255,255,255,.3)}
+.team-leader-pick{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:#FEF3C7;color:#92400E;margin-left:8px}
+
+/* ─── WEEK 4 : 베스트 지식 세미나 ──────── */
+.w4-layout{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+/* seminar presenter card */
+.presenter-card{background:var(--card);border-radius:14px;border:1px solid var(--border);overflow:hidden}
+.pc-head{background:linear-gradient(135deg,var(--m4d),var(--m4));padding:20px 22px;color:#fff;position:relative;overflow:hidden}
+.pc-head::after{content:'🌱';font-size:90px;position:absolute;right:-10px;bottom:-15px;opacity:.12;line-height:1}
+.pc-lbl{font-size:10px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:5px}
+.pc-title{font-size:20px;font-weight:900;margin-bottom:4px}
+.pc-sub{font-size:13px;color:rgba(255,255,255,.6);line-height:1.65}
+.pc-body{padding:22px}
+.presenter-profile{display:flex;align-items:center;gap:14px;background:var(--m4l);border:1.5px solid var(--m4mid);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+.pp-av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--m4d),var(--m4));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;border:2px solid #fff;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.pp-name{font-size:18px;font-weight:900;color:var(--m4d)}
+.pp-topic{font-size:13px;color:var(--sub);margin-top:4px;line-height:1.6}
+.pp-vote-badge{margin-top:6px;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--m4);color:#fff}
+.additional-presenters{margin-top:14px}
+.ap-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px}
+.ap-item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border);margin-bottom:6px}
+.ap-item:last-child{margin-bottom:0}
+.ap-av{width:32px;height:32px;border-radius:50%;background:var(--m4);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.ap-name{font-size:13px;font-weight:700;color:var(--text)}
+.ap-topic{font-size:12px;color:var(--muted);margin-top:1px}
+.ap-type{margin-left:auto;font-size:10px;font-weight:700;padding:2px 9px;border-radius:999px}
+
+/* photo upload */
+.photo-upload-card{background:var(--card);border-radius:14px;border:1px solid var(--border);overflow:hidden}
+.puc-head{background:linear-gradient(135deg,#ECFDF5,#D1FAE5);padding:18px 22px;border-bottom:1px solid var(--border)}
+.puc-title{font-size:20px;font-weight:900;color:var(--text);margin-bottom:4px}
+.puc-sub{font-size:13px;color:var(--sub);line-height:1.65}
+.puc-body{padding:22px}
+.puc-guide{background:var(--bg);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--sub);line-height:1.8;border-left:4px solid var(--m4);margin-bottom:16px}
+.puc-guide strong{color:var(--text)}
+.photo-drop{display:flex;align-items:center;gap:14px;cursor:pointer;padding:20px;background:var(--bg);border:2px dashed var(--border);border-radius:12px;transition:border .2s}
+.photo-drop:hover{border-color:var(--m4)}
+.uploaded-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-top:12px}
+.photo-thumb{border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--bg)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.puc-submit{width:100%;margin-top:16px;background:var(--m4);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .18s}
+.puc-submit:hover{background:var(--m4d);box-shadow:0 4px 16px rgba(16,185,129,.3)}
+.puc-success{display:none;margin-top:12px;font-size:13px;color:var(--m4d);font-weight:600;background:var(--m4l);padding:10px 14px;border-radius:8px;border:1px solid var(--m4mid)}
+
+/* ─── GROWTH CAPSULE BANNER ─────────────── */
+.capsule-banner{background:linear-gradient(135deg,var(--navy),var(--navy3));border-radius:14px;padding:18px 24px;margin-top:18px;display:flex;align-items:center;gap:18px;border:1px solid rgba(16,185,129,.2)}
+.cb-icon{font-size:48px;flex-shrink:0;animation:floatUp 3s ease-in-out infinite}
+.cb-content{flex:1}
+.cb-title{font-size:17px;font-weight:900;color:#fff;margin-bottom:4px}
+.cb-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.65}
+.cb-count{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;color:var(--m4mid);margin-top:8px}
+.cb-peek-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:13px;font-weight:700;padding:10px 20px;border-radius:9px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;flex-shrink:0;transition:all .18s}
+.cb-peek-btn:hover{background:rgba(255,255,255,.15);color:#fff}
+.capsule-msgs{display:none;margin-top:14px;flex-direction:column;gap:7px}
+.capsule-msgs.open{display:flex}
+.capsule-msg{background:rgba(255,255,255,.06);border-radius:10px;padding:11px 15px;border-left:3px solid var(--m4);font-size:13px;color:rgba(255,255,255,.75);line-height:1.7;font-style:italic}
+.capsule-msg-who{font-size:10px;font-weight:700;color:var(--m4mid);margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes floatUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+</style>
+</head>
+<body>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="db">
+  <div class="db-inner">
+  <div class="db-topbar">
+    <button class="db-back" onclick="history.back()">← 보고서</button>
+    <div style="display:flex;flex-direction:column">
+      <div class="db-brand-main">GROUND IN : <span>HIGH-5</span></div>
+      <div class="db-brand-sub">5대 조직문화 지향점 내재화 프로그램</div>
+    </div>
+  </div>
+  <div class="db-cells">
+    <div class="dbc" style="background:rgba(240,165,0,.06)">
+      <div class="dbc-lbl">나의 누적 포인트</div>
+      <div class="dbc-val gold-v" style="font-size:36px">2,640<span class="u">P</span></div>
+      <div class="dbc-sub" style="color:rgba(240,165,0,.55);font-weight:700">이번주 +200P 획득</div>
+      <div style="margin-top:5px;padding-top:5px;border-top:1px solid rgba(255,255,255,.06)">
+        <div class="dbc-lbl" style="font-size:10px">우리팀 전체 포인트</div>
+        <div style="font-size:18px;font-weight:700;color:#fff;line-height:1">16,820<span style="font-size:11px;color:rgba(255,255,255,.4);font-weight:500">P</span></div>
+        <div class="dbc-sub" style="font-size:10px">이번주 +1,180P</div>
+      </div>
+    </div>
+    <div class="dbc">
+      <div class="dbc-lbl">나의 포인트 랭킹</div>
+      <div class="dbc-val gold-v" style="font-size:30px">11<span class="u">위</span></div>
+      <div style="margin-top:5px;padding-top:5px;border-top:1px solid rgba(255,255,255,.06)">
+        <div class="dbc-lbl" style="font-size:10px">우리팀 포인트 랭킹</div>
+        <div style="font-size:20px;font-weight:900;color:#fff;line-height:1">2<span style="font-size:11px;color:rgba(255,255,255,.4);font-weight:500">위</span></div>
+        <div class="dbc-sub" style="font-size:10px">전체 142팀 중</div>
+      </div>
+    </div>
+    <div class="dbc">
+      <div class="dbc-lbl">연속 참여 스트릭</div>
+      <div class="dbc-val">18<span class="u" style="color:#fff">일</span></div>
+      <div class="s-row">
+        <div class="sd on">월</div><div class="sd on">화</div><div class="sd on">수</div>
+        <div class="sd on">목</div><div class="sd today">금</div><div class="sd">토</div><div class="sd">일</div>
+      </div>
+      <div class="dbc-sub" style="margin-top:3px;font-size:10px">🔥 18일 연속! +100P</div>
+    </div>
+    <div class="db-mis">
+      <div class="db-mis-lbl">오늘의 일일 미션</div>
+      <div class="mi-list">
+        <div class="mi"><button class="mi-chk done" onclick="tMi(this)">✓</button><span class="mi-txt">오늘 리더 메시지 읽기</span><span class="mi-pts">+10P ✓</span></div>
+        <div class="mi"><button class="mi-chk done" onclick="tMi(this)">✓</button><span class="mi-txt">팀원 메시지에 공감 1회 누르기</span><span class="mi-pts">+5P ✓</span></div>
+        <div class="mi"><button class="mi-chk" onclick="tMi(this)"></button><span class="mi-txt">이번 주 미션 참여하기</span><span class="mi-pts">+20P</span></div>
+        <div class="mi"><button class="mi-chk" onclick="tMi(this)"></button><span class="mi-txt">전사 랭킹 확인하기</span><span class="mi-pts">+5P</span></div>
+        <div class="mi"><button class="mi-chk" onclick="tMi(this)"></button><span class="mi-txt">팀원 전체 참여하기</span><span class="mi-pts">+50P</span></div>
+      </div>
+    </div>
+    <div class="dbc-prog">
+      <div class="dbc-lbl">우리팀 진행률</div>
+      <div class="dbc-val" style="color:#fff">64<span class="u">%</span></div>
+      <div class="db-pbar"><div class="db-pfill" style="width:64%"></div></div>
+      <div class="dbc-sub">9 / 14명 완료 · Week 2 진행 중</div>
+      <button class="db-pbtn" onclick="tProg(this)">📊 실/본부 상세 ▾</button>
+      <div class="prog-inline" id="progInline">
+        <div class="pil-title">실 · 본부 단위 진행률</div>
+        <div class="pil-row"><span class="pil-lbl">전략사업본부</span><div class="pil-bw"><div class="pil-bf" style="width:80%;background:#10B981"></div></div><span class="pil-pct">80%</span></div>
+        <div class="pil-row"><span class="pil-lbl">기획운영실</span><div class="pil-bw"><div class="pil-bf" style="width:65%;background:var(--m4)"></div></div><span class="pil-pct">65%</span></div>
+        <div class="pil-row"><span class="pil-lbl">개발본부</span><div class="pil-bw"><div class="pil-bf" style="width:70%;background:var(--m4)"></div></div><span class="pil-pct">70%</span></div>
+        <div class="pil-row"><span class="pil-lbl">마케팅실</span><div class="pil-bw"><div class="pil-bf" style="width:50%;background:#F59E0B"></div></div><span class="pil-pct">50%</span></div>
+        <div class="pil-row"><span class="pil-lbl">영업본부</span><div class="pil-bw"><div class="pil-bf" style="width:55%;background:#F59E0B"></div></div><span class="pil-pct">55%</span></div>
+      </div>
+    </div>
+    <div class="db-leader">
+      <div class="db-leader-lbl">👑 팀장 현황판</div>
+      <div class="lm-row"><div class="lm-av">김</div>김민준<span class="lm-st lm-done">완료</span></div>
+      <div class="lm-row"><div class="lm-av">이</div>이서연<span class="lm-st lm-done">완료</span></div>
+      <div class="lm-row"><div class="lm-av">박</div>박도현<span class="lm-st lm-todo">미완료</span></div>
+      <div class="lm-row"><div class="lm-av">최</div>최지우<span class="lm-st lm-todo">미완료</span></div>
+      <button class="nudge-btn">📨 미완료 독려</button>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="db-toggle-wrap">
+    <button class="db-toggle-btn" id="dbToggleBtn" onclick="toggleDB()">▲ 대시보드 숨기기</button>
+  </div>
+
+  <div class="page-hero">
+    <div class="ph-badge">Month 4 · 성장과 육성</div>
+    <div class="ph-month-title">성장과 육성</div>
+    <div class="ph-keymsg">"회사와 함께 구성원도 성장합니다"</div>
+  </div>
+
+  <div class="week-nav">
+    <button class="wn-btn active" onclick="showWeek(1,this)">Week 1<span class="wn-sub">리더 성장 루트</span></button>
+    <button class="wn-btn" onclick="showWeek(2,this)">Week 2<span class="wn-sub">성장 목표 릴레이</span></button>
+    <button class="wn-btn" onclick="showWeek(3,this)">Week 3<span class="wn-sub">베스트 지식 공유</span></button>
+    <button class="wn-btn" onclick="showWeek(4,this)">Week 4<span class="wn-sub">베스트 지식 세미나</span></button>
+  </div>
+
+  <!-- ══ WEEK 1 ════════════════════════════════════════ -->
+  <div class="week-panel active" id="week1">
+    <div class="card-intro"><strong>리더 성장 루트 조언</strong><br>본부장/사업부장 → 실장/소장 → 팀장 순으로 본인을 성장시킨 경험과 구성원에게 도움이 될 성장 루트(책·멘토·경험 등)를 메시지로 작성합니다. 전 구성원에게 공개되며 좋아요·댓글 기능이 제공됩니다.</div>
+
+    <div class="w1-grid">
+      <!-- 본부장 -->
+      <div class="leader-card">
+        <div class="lc-top-bar" style="background:var(--m4)"></div>
+        <div class="lc-head">
+          <div class="person-photo"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="26" fill="#0F766E"></circle><circle cx="26" cy="20" r="10" fill="#FDDCB5"></circle><ellipse cx="26" cy="44" rx="14" ry="9" fill="#FDDCB5"></ellipse><path d="M16 17 Q26 9 36 17 L36 13 Q26 5 16 13Z" fill="#3D2B1F"></path><circle cx="22" cy="19" r="1.8" fill="#1a0d00"></circle><circle cx="30" cy="19" r="1.8" fill="#1a0d00"></circle><path d="M23 23 Q26 26 29 23" stroke="#C68642" stroke-width="1.2" fill="none" stroke-linecap="round"></path></svg></div>
+          <div><div class="lc-name">김성훈 본부장</div><div class="lc-role">전략사업본부</div></div>
+        </div>
+        <div class="lc-body">
+          <div class="lc-section">
+            <div class="lc-s-label">🌱 성장 메시지</div>
+            <div class="lc-msg">"저를 가장 성장시킨 것은 실패였습니다. 30대 초반 프로젝트 실패 후 3개월간 원인 분석만 했는데, 그 경험이 지금의 저를 만들었습니다. 실패를 데이터로 바꾸는 습관을 길러보세요."</div>
+          </div>
+          <div class="lc-section">
+            <div class="lc-s-label">📚 추천 성장 루트</div>
+            <div class="route-items">
+              <div class="route-item"><div class="ri-icon">📖</div><div><div class="ri-type">책</div><div class="ri-text">《아웃라이어》 말콤 글래드웰 — 1만 시간의 법칙, 성장의 본질</div></div></div>
+              <div class="route-item"><div class="ri-icon">🗣️</div><div><div class="ri-type">멘토</div><div class="ri-text">업계 선배 1명과 분기마다 커피 한 잔. 방향보다 질문을 얻어라</div></div></div>
+              <div class="route-item"><div class="ri-icon">✍️</div><div><div class="ri-type">경험</div><div class="ri-text">매일 퇴근 전 오늘 배운 것 한 줄 기록. 1년이면 책 한 권 분량</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="lc-footer">
+          <button class="like-btn" onclick="tLike(this)">❤️ <span>28</span></button>
+          <button class="cmt-btn" onclick="tCmt(this)">💬 댓글 <span>6</span></button>
+        </div>
+        <div class="cmt-area">
+          <div class="cmt-item"><div class="ci-av">익</div>실패를 데이터로! 오늘부터 실천해보겠습니다.</div>
+          <div class="cmt-item"><div class="ci-av">익</div>아웃라이어 꼭 읽어봐야겠어요. 추천 감사합니다 📖</div>
+          <div class="cmt-irow"><input class="cmt-input" type="text" placeholder="댓글 달기 (익명)"><button class="cmt-send" onclick="addCmt(this)">등록</button></div>
+        </div>
+      </div>
+
+      <!-- 실장 -->
+      <div class="leader-card">
+        <div class="lc-top-bar" style="background:#7C3AED"></div>
+        <div class="lc-head">
+          <div class="person-photo"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="26" fill="#7C3AED"></circle><circle cx="26" cy="20" r="10" fill="#FDDCB5"></circle><ellipse cx="26" cy="44" rx="14" ry="9" fill="#FDDCB5"></ellipse><path d="M16 16 Q26 8 36 16" stroke="#5B2D8A" stroke-width="4" fill="none" stroke-linecap="round"></path><circle cx="22" cy="19" r="1.8" fill="#1a0d00"></circle><circle cx="30" cy="19" r="1.8" fill="#1a0d00"></circle><path d="M23 23 Q26 26 29 23" stroke="#C68642" stroke-width="1.2" fill="none" stroke-linecap="round"></path></svg></div>
+          <div><div class="lc-name">이정민 실장</div><div class="lc-role">기획운영실</div></div>
+        </div>
+        <div class="lc-body">
+          <div class="lc-section">
+            <div class="lc-s-label">🌱 성장 메시지</div>
+            <div class="lc-msg">"T자형 인재가 되세요. 한 분야를 깊게 파고, 그 주변 분야를 넓게 아는 것. 저는 기획 전문가이지만 개발·마케팅·디자인 기초를 알면서 협업의 질이 전혀 달라졌습니다."</div>
+          </div>
+          <div class="lc-section">
+            <div class="lc-s-label">📚 추천 성장 루트</div>
+            <div class="route-items">
+              <div class="route-item"><div class="ri-icon">📖</div><div><div class="ri-type">책</div><div class="ri-text">《린 스타트업》 에릭 리스 — 빠른 실험과 학습의 사이클</div></div></div>
+              <div class="route-item"><div class="ri-icon">🎯</div><div><div class="ri-type">방법</div><div class="ri-text">사이드 프로젝트 1개. 작게 시작해 빠르게 실패하고 빠르게 배워라</div></div></div>
+              <div class="route-item"><div class="ri-icon">🌐</div><div><div class="ri-type">커뮤니티</div><div class="ri-text">업계 커뮤니티 1곳 꾸준히 참여. 사람이 곧 기회입니다</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="lc-footer">
+          <button class="like-btn" onclick="tLike(this)">❤️ <span>19</span></button>
+          <button class="cmt-btn" onclick="tCmt(this)">💬 댓글 <span>4</span></button>
+        </div>
+        <div class="cmt-area open">
+          <div class="cmt-item"><div class="ci-av">익</div>T자형 인재 개념 처음 들었는데 정말 와닿아요!</div>
+          <div class="cmt-irow"><input class="cmt-input" type="text" placeholder="댓글 달기 (익명)"><button class="cmt-send" onclick="addCmt(this)">등록</button></div>
+        </div>
+      </div>
+
+      <!-- 팀장 -->
+      <div class="leader-card">
+        <div class="lc-top-bar" style="background:#0369A1"></div>
+        <div class="lc-head">
+          <div class="person-photo"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="26" fill="#0369A1"></circle><circle cx="26" cy="20" r="10" fill="#FDDCB5"></circle><ellipse cx="26" cy="44" rx="14" ry="9" fill="#FDDCB5"></ellipse><rect x="20" y="12" width="12" height="5" rx="2.5" fill="#1E3A5F"></rect><circle cx="22" cy="19" r="1.8" fill="#1a0d00"></circle><circle cx="30" cy="19" r="1.8" fill="#1a0d00"></circle><path d="M23 23 Q26 26 29 23" stroke="#C68642" stroke-width="1.2" fill="none" stroke-linecap="round"></path></svg></div>
+          <div><div class="lc-name">박재원 팀장</div><div class="lc-role">개발1팀</div></div>
+        </div>
+        <div class="lc-body">
+          <div class="lc-section">
+            <div class="lc-s-label">🌱 성장 메시지</div>
+            <div class="lc-msg">"개발자로서 가장 빨리 성장한 방법은 코드 리뷰였습니다. 내 코드를 남이 보게 하는 두려움을 이기는 것, 그리고 남의 코드에서 배우는 것. 성장은 혼자 하는 게 아닙니다."</div>
+          </div>
+          <div class="lc-section">
+            <div class="lc-s-label">📚 추천 성장 루트</div>
+            <div class="route-items">
+              <div class="route-item"><div class="ri-icon">📖</div><div><div class="ri-type">책</div><div class="ri-text">《클린 코드》 로버트 마틴 — 개발자라면 반드시, 비개발자에게도 인사이트</div></div></div>
+              <div class="route-item"><div class="ri-icon">🤝</div><div><div class="ri-type">동료</div><div class="ri-text">가장 잘하는 팀원의 업무 방식을 3개월간 관찰하고 따라해보기</div></div></div>
+              <div class="route-item"><div class="ri-icon">🎤</div><div><div class="ri-type">발표</div><div class="ri-text">월 1회 팀 내 발표. 설명할 수 없으면 아는 게 아닙니다</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="lc-footer">
+          <button class="like-btn" onclick="tLike(this)">❤️ <span>34</span></button>
+          <button class="cmt-btn" onclick="tCmt(this)">💬 댓글 <span>8</span></button>
+        </div>
+        <div class="cmt-area open">
+          <div class="cmt-item"><div class="ci-av">익</div>설명할 수 없으면 아는 게 아니다! 명언입니다.</div>
+          <div class="cmt-item"><div class="ci-av">익</div>코드 리뷰 두려움, 저만 그런 게 아니었군요 😊</div>
+          <div class="cmt-irow"><input class="cmt-input" type="text" placeholder="댓글 달기 (익명)"><button class="cmt-send" onclick="addCmt(this)">등록</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ WEEK 2 ════════════════════════════════════════ -->
+  <div class="week-panel" id="week2">
+    <div class="card-intro"><strong>성장 목표 릴레이</strong><br>팀장이 팀원을 지목하여 "올해 나의 성장 목표"를 작성합니다. 릴레이 방식으로 전원 완료되면 익명으로 전체 공개되며, <strong>성장 타임캡슐</strong>에 봉인되어 12월 전체 공개 이벤트와 연결됩니다.</div>
+
+    <div class="w2-layout">
+      <!-- 리더 메시지 고정 -->
+      <div>
+        <div class="sec-label">리더 성장 메시지 (고정)</div>
+        <div class="w2-leader-panel">
+          <div class="w2lp-head"><div class="w2lp-tag">기준 메시지</div><div class="w2lp-title">본부장 → 실장 → 팀장</div></div>
+          <div class="lmi"><div class="lmi-role"><div class="lmi-dot" style="background:#0F766E"></div>본부장</div><div class="lmi-name">김성훈 본부장 · 전략사업본부</div><div class="lmi-msg">"실패를 데이터로 바꾸는 습관. 매일 배운 것 한 줄 기록. 1년이면 책 한 권 분량의 성장이 됩니다."</div></div>
+          <div class="lmi"><div class="lmi-role"><div class="lmi-dot" style="background:#7C3AED"></div>실장</div><div class="lmi-name">이정민 실장 · 기획운영실</div><div class="lmi-msg">"T자형 인재를 목표로 하세요. 한 분야를 깊게, 주변 분야를 넓게. 협업의 질이 완전히 달라집니다."</div></div>
+          <div class="lmi"><div class="lmi-role"><div class="lmi-dot" style="background:#0369A1"></div>팀장</div><div class="lmi-name">박재원 팀장 · 개발1팀</div><div class="lmi-msg">"성장은 혼자 하는 게 아닙니다. 동료에게 배우고, 동료에게 설명하는 것이 가장 빠른 성장입니다."</div></div>
+        </div>
+      </div>
+
+      <!-- 성장 목표 보드 -->
+      <div>
+        <div class="sec-label">성장 목표 릴레이 보드</div>
+        <div class="growth-board">
+          <div class="gb-header">
+            <span class="gb-title">🌱 개발1팀 성장 목표</span>
+            <div class="gb-prog-wrap">
+              <div class="gb-prog-top"><span>참여 현황</span><span id="gbNum">9 / 14명</span></div>
+              <div class="gb-prog-bar" id="gbBar"><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgb(52, 211, 153);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgb(52, 211, 153);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgb(52, 211, 153);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgb(52, 211, 153);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgb(52, 211, 153);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgb(52, 211, 153);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgb(52, 211, 153);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgb(52, 211, 153);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgb(52, 211, 153);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgba(255, 255, 255, 0.1);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgba(255, 255, 255, 0.1);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgba(255, 255, 255, 0.1);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgba(255, 255, 255, 0.1);"></div><div class="gb-seg" style="flex: 1 1 0%; margin: 0px 1px; border-radius: 4px; background: rgba(255, 255, 255, 0.1);"></div></div>
+            </div>
+          </div>
+          <div class="gb-body" id="gbBody">
+            <div class="goal-card"><div class="gc-num">01</div><div class="gc-msg">"올해는 Python 데이터 분석 자격증을 취득하고, 업무에 실제로 적용하는 것이 목표입니다."</div><div class="gc-bottom"><span class="gc-tag">기술 성장</span><button class="gc-like on" onclick="gcLike(this)">🌱 12</button></div></div>
+            <div class="goal-card"><div class="gc-num">02</div><div class="gc-msg">"주니어 동료 1명의 멘토가 되어보고 싶습니다. 가르치면서 제가 더 많이 배울 것 같아요."</div><div class="gc-bottom"><span class="gc-tag">리더십</span><button class="gc-like" onclick="gcLike(this)">🌱 8</button></div></div>
+            <div class="goal-card"><div class="gc-num">03</div><div class="gc-msg">"퇴근 후 30분이라도 영어 공부. 글로벌 프로젝트에 기여할 수 있는 수준이 되고 싶습니다."</div><div class="gc-bottom"><span class="gc-tag">언어 역량</span><button class="gc-like on" onclick="gcLike(this)">🌱 15</button></div></div>
+            <div class="goal-card"><div class="gc-num">04</div><div class="gc-msg">"업무 외 영역으로 UX 디자인을 공부해보려 합니다. 개발자이지만 사용자 관점을 이해하고 싶어요."</div><div class="gc-bottom"><span class="gc-tag">T자형 역량</span><button class="gc-like" onclick="gcLike(this)">🌱 9</button></div></div>
+            <div class="goal-card"><div class="gc-num">05</div><div class="gc-msg">"올해 읽을 책 12권. 한 달에 한 권, 읽은 책 요약을 팀원과 공유하겠습니다."</div><div class="gc-bottom"><span class="gc-tag">지식 성장</span><button class="gc-like on" onclick="gcLike(this)">🌱 11</button></div></div>
+            <div class="goal-card"><div class="gc-num">06</div><div class="gc-msg">"발표 능력을 키우고 싶습니다. 올해 외부 컨퍼런스에서 발표 기회를 만들어보겠습니다."</div><div class="gc-bottom"><span class="gc-tag">커뮤니케이션</span><button class="gc-like" onclick="gcLike(this)">🌱 7</button></div></div>
+            <div class="goal-card"><div class="gc-num">07</div><div class="gc-msg">"타 부서 동료 3명과 점심 식사. 우물 안 개구리에서 벗어나 시야를 넓히겠습니다."</div><div class="gc-bottom"><span class="gc-tag">네트워크</span><button class="gc-like" onclick="gcLike(this)">🌱 10</button></div></div>
+            <div class="goal-card"><div class="gc-num">08</div><div class="gc-msg">"업무 자동화 스크립트 하나를 직접 만들어 팀에 공유하겠습니다. 배움의 결실을 나누고 싶어요."</div><div class="gc-bottom"><span class="gc-tag">기술 성장</span><button class="gc-like on" onclick="gcLike(this)">🌱 13</button></div></div>
+            <div class="goal-card"><div class="gc-num">09</div><div class="gc-msg">"올해는 '아니오'를 잘 말하는 것이 목표입니다. 집중력 있는 성장을 위해 선택과 집중을 배우겠습니다."</div><div class="gc-bottom"><span class="gc-tag">자기관리</span><button class="gc-like" onclick="gcLike(this)">🌱 16</button></div></div>
+          </div>
+          <div class="gb-input-area">
+            <div class="gb-next">다음 순서: <strong>최지우님</strong> — 올해 나의 성장 목표를 한 줄로 작성해주세요</div>
+            <div class="gb-irow">
+              <input class="gb-input" id="gbInput" type="text" placeholder="&quot;올해 나의 성장 목표는...&quot;을 자유롭게 적어주세요" maxlength="150">
+              <button class="gb-send" onclick="addGoal()">등록</button>
+              <button class="gb-nominate" onclick="nominateNext()">👤 다음 지목</button>
+            </div>
+          </div>
+          <div class="gb-capsule-bar">
+            <span class="gcb-icon">⏳</span>
+            <span>성장 타임캡슐 자동 저장 중</span>
+            <span class="gcb-count">9개 봉인</span>
+            <span style="margin-left:auto">12월 전체 공개 예정 🔒</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ WEEK 3 ════════════════════════════════════════ -->
+  <div class="week-panel" id="week3">
+    <div class="card-intro"><strong>나의 베스트 지식 공유</strong><br>업무·독서·경험에서 가장 잘 알고 자신 있는 것 1가지를 익명으로 작성합니다. 기한 종료 후 전체 공개되며 <strong>"함께 알고 싶어요!"</strong> 익명 투표가 시작됩니다. 최다 득표 항목은 강조 표시되며 팀장이 추가 선정할 수도 있습니다.</div>
+
+    <!-- 작성 영역 -->
+    <div class="w3-submit-area">
+      <div class="w3-sa-title">✍️ 나의 베스트 지식을 작성해주세요</div>
+      <div class="w3-sa-desc">"나는 <span style="color:var(--m4d);font-weight:700">OOO</span>에 대해 자신있습니다" — 업무·책·경험에서 가장 잘 아는 것 1가지를 작성해주세요.</div>
+      <div style="margin-bottom:10px">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">주제 분야</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="topic-chip active" onclick="selTopic(this,&#39;기술/개발&#39;)">💻 기술/개발</button>
+          <button class="topic-chip" onclick="selTopic(this,&#39;기획/전략&#39;)">📋 기획/전략</button>
+          <button class="topic-chip" onclick="selTopic(this,&#39;데이터/분석&#39;)">📊 데이터/분석</button>
+          <button class="topic-chip" onclick="selTopic(this,&#39;커뮤니케이션&#39;)">💬 커뮤니케이션</button>
+          <button class="topic-chip" onclick="selTopic(this,&#39;언어/외국어&#39;)">🌐 언어/외국어</button>
+          <button class="topic-chip" onclick="selTopic(this,&#39;자기관리&#39;)">🧠 자기관리</button>
+          <button class="topic-chip" onclick="selTopic(this,&#39;업무 도구&#39;)">🛠️ 업무 도구</button>
+          <button class="topic-chip" onclick="selTopic(this,&#39;기타&#39;)">✨ 기타</button>
+        </div>
+      </div>
+      <style>.topic-chip{padding:7px 14px;border-radius:999px;border:1.5px solid var(--border);font-size:13px;font-weight:600;cursor:pointer;background:#fff;color:var(--sub);font-family:'Noto Sans KR',sans-serif;transition:all .15s}.topic-chip:hover{border-color:var(--m4);color:var(--m4d)}.topic-chip.active{border-color:var(--m4);background:var(--m4);color:#fff}</style>
+      <div style="margin-top:12px">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">나의 전문 지식</div>
+        <div style="position:relative">
+          <span style="position:absolute;left:16px;top:14px;font-size:15px;font-weight:700;color:var(--m4d);pointer-events:none;white-space:nowrap">나는</span>
+          <input id="w3subject" type="text" style="width: 100%; border-color: var(--border); border-top-style: ; border-top-width: ; border-right-style: ; border-right-width: ; border-bottom-style: ; border-bottom-width: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 10px; padding: 14px 16px 14px 60px; font-size: 15px; font-family: &quot;Noto Sans KR&quot;, sans-serif; color: var(--text); outline: none; transition: border 0.2s;" placeholder="예: React 컴포넌트 설계" onfocus="this.style.borderColor=&#39;var(--m4)&#39;" onblur="this.style.borderColor=&#39;var(--border)&#39;">
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+          <span style="font-size:15px;font-weight:700;color:var(--m4d);white-space:nowrap">에 대해 자신있습니다.</span>
+        </div>
+        <div style="margin-top:10px">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">간단한 설명 (선택)</div>
+          <textarea id="w3desc" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;font-size:14px;font-family:&#39;Noto Sans KR&#39;,sans-serif;color:var(--text);outline:none;resize:vertical;min-height:80px;transition:border .2s" placeholder="어디서 배웠는지, 어떻게 활용할 수 있는지 간략히 설명해주세요" onfocus="this.style.borderColor=&#39;var(--m4)&#39;" onblur="this.style.borderColor=&#39;var(--border)&#39;"></textarea>
+        </div>
+      </div>
+      <button class="w3-submit-btn" onclick="submitKnowledge()">✅ 익명으로 제출하기</button>
+    </div>
+
+    <!-- 공개된 지식 카드들 -->
+    <div class="sec-label">공개된 베스트 지식 <span style="font-size:11px;font-weight:400;color:var(--muted);margin-left:4px">— "함께 알고 싶어요!" 투표 진행 중</span></div>
+    <div class="knowledge-grid" id="knGrid"><div class="kn-card"><div class="kn-header"><div style="font-size:14px;font-weight:700;color:var(--m4d)">기술/개발</div><div class="kn-anon">익명</div></div><div class="kn-body"><div class="kn-subject">나는</div><div class="kn-text">"조직문화에 자신있습니다."</div></div><div class="kn-footer"><span class="vote-count">💚 0표</span><button class="vote-btn" onclick="castVote(this)">🌱 함께 알고 싶어요!</button></div></div>
+
+      <div class="kn-card top-vote">
+        <div class="kn-header">
+          <div style="font-size:14px;font-weight:700;color:#fff">💻 기술/개발</div>
+          <span class="kn-top-badge">🏆 1위</span>
+          <div class="kn-anon">익명</div>
+        </div>
+        <div class="kn-body">
+          <div class="kn-subject" style="color:rgba(255,255,255,.7)">나는</div>
+          <div class="kn-text">"React 컴포넌트 최적화와 성능 개선에 자신있습니다."</div>
+          <div class="kn-detail">"memo, useMemo, useCallback의 올바른 사용법부터 코드 스플리팅까지 — 실무 적용 노하우를 공유할 수 있습니다."</div>
+        </div>
+        <div class="kn-footer">
+          <span class="vote-count">💚 함께 알고 싶어요 23표</span>
+          <span class="team-leader-pick">👑 팀장 선정</span>
+        </div>
+      </div>
+
+      <div class="kn-card">
+        <div class="kn-header">
+          <div style="font-size:14px;font-weight:700;color:var(--m4d)">📊 데이터/분석</div>
+          <div class="kn-anon">익명</div>
+        </div>
+        <div class="kn-body">
+          <div class="kn-subject">나는</div>
+          <div class="kn-text">"Excel 피벗테이블과 Power Query 자동화에 자신있습니다."</div>
+          <div class="kn-detail">"반복 보고서를 1/10 시간으로 줄이는 자동화 방법을 알고 있습니다. 팀에 적용하면 주당 3시간 이상 절약 가능합니다."</div>
+        </div>
+        <div class="kn-footer">
+          <span class="vote-count">💚 함께 알고 싶어요 18표</span>
+          <button class="vote-btn" onclick="castVote(this)">🌱 함께 알고 싶어요!</button>
+        </div>
+      </div>
+
+      <div class="kn-card">
+        <div class="kn-header">
+          <div style="font-size:14px;font-weight:700;color:var(--m4d)">💬 커뮤니케이션</div>
+          <div class="kn-anon">익명</div>
+        </div>
+        <div class="kn-body">
+          <div class="kn-subject">나는</div>
+          <div class="kn-text">"설득력 있는 보고서와 문서 작성에 자신있습니다."</div>
+          <div class="kn-detail">"두괄식 구성, 시각화, 임원 보고용 압축 요약까지. 문서 하나로 의사결정을 빠르게 만드는 법을 알고 있습니다."</div>
+        </div>
+        <div class="kn-footer">
+          <span class="vote-count">💚 함께 알고 싶어요 15표</span>
+          <button class="vote-btn" onclick="castVote(this)">🌱 함께 알고 싶어요!</button>
+        </div>
+      </div>
+
+      <div class="kn-card">
+        <div class="kn-header">
+          <div style="font-size:14px;font-weight:700;color:var(--m4d)">🛠️ 업무 도구</div>
+          <div class="kn-anon">익명</div>
+        </div>
+        <div class="kn-body">
+          <div class="kn-subject">나는</div>
+          <div class="kn-text">"Notion을 활용한 팀 지식 관리 시스템 구축에 자신있습니다."</div>
+          <div class="kn-detail">"팀 위키, 프로젝트 관리, 회의록 템플릿까지 Notion으로 팀 생산성을 올리는 실제 사례를 공유할 수 있습니다."</div>
+        </div>
+        <div class="kn-footer">
+          <span class="vote-count">💚 함께 알고 싶어요 12표</span>
+          <button class="vote-btn" onclick="castVote(this)">🌱 함께 알고 싶어요!</button>
+        </div>
+      </div>
+
+      <div class="kn-card">
+        <div class="kn-header">
+          <div style="font-size:14px;font-weight:700;color:var(--m4d)">🧠 자기관리</div>
+          <div class="kn-anon">익명</div>
+        </div>
+        <div class="kn-body">
+          <div class="kn-subject">나는</div>
+          <div class="kn-text">"GTD(Getting Things Done) 생산성 시스템 적용에 자신있습니다."</div>
+          <div class="kn-detail">"머릿속 할 일을 외부 시스템에 옮기고, 컨텍스트별로 분류해서 집중력을 유지하는 개인 생산성 시스템입니다."</div>
+        </div>
+        <div class="kn-footer">
+          <span class="vote-count">💚 함께 알고 싶어요 10표</span>
+          <button class="vote-btn" onclick="castVote(this)">🌱 함께 알고 싶어요!</button>
+        </div>
+      </div>
+
+      <div class="kn-card">
+        <div class="kn-header">
+          <div style="font-size:14px;font-weight:700;color:var(--m4d)">🌐 언어/외국어</div>
+          <div class="kn-anon">익명</div>
+        </div>
+        <div class="kn-body">
+          <div class="kn-subject">나는</div>
+          <div class="kn-text">"영어 이메일·발표 자료 작성에 자신있습니다."</div>
+          <div class="kn-detail">"비즈니스 영어 이메일 상황별 표현과 글로벌 발표자료 구성 노하우를 갖고 있습니다. 원어민처럼보다 명확하게가 목표입니다."</div>
+        </div>
+        <div class="kn-footer">
+          <span class="vote-count">💚 함께 알고 싶어요 9표</span>
+          <button class="vote-btn" onclick="castVote(this)">🌱 함께 알고 싶어요!</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ WEEK 4 ════════════════════════════════════════ -->
+  <div class="week-panel" id="week4">
+    <div class="card-intro"><strong>베스트 지식 세미나</strong><br>Week 3 투표에서 최다 득표한 분이 팀원들에게 지식 공유 세미나를 주도합니다. 팀장 추가 선정으로 다수 발표도 가능합니다. 세미나 진행 사진을 업로드해 팀내에 공유해주세요.</div>
+
+    <div class="w4-layout">
+      <!-- 발표자 카드 -->
+      <div class="presenter-card">
+        <div class="pc-head">
+          <div class="pc-lbl">Week 4 · 베스트 지식 세미나</div>
+          <div class="pc-title">🎤 세미나 발표자</div>
+          <div class="pc-sub">Week 3 투표 결과 기반 · 팀장 추가 선정 포함</div>
+        </div>
+        <div class="pc-body">
+          <!-- 최다 득표 발표자 -->
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px">🏆 최다 득표 발표자</div>
+          <div class="presenter-profile">
+            <div class="pp-av">김</div>
+            <div>
+              <div class="pp-name">김민준님</div>
+              <div class="pp-topic">발표 주제 — <strong>"React 컴포넌트 최적화와 성능 개선"</strong></div>
+              <div class="pp-topic" style="margin-top:3px">memo, useMemo, useCallback · 코드 스플리팅</div>
+              <div class="pp-vote-badge">💚 23표 · 1위</div>
+            </div>
+          </div>
+
+          <!-- 팀장 추가 선정 -->
+          <div class="additional-presenters">
+            <div class="ap-title">👑 팀장 추가 선정 발표자</div>
+            <div class="ap-item">
+              <div class="ap-av">이</div>
+              <div>
+                <div class="ap-name">이서연님</div>
+                <div class="ap-topic">"Excel 피벗 &amp; Power Query 자동화" — 18표</div>
+              </div>
+              <span class="ap-type" style="background:#FEF3C7;color:#92400E">팀장 선정</span>
+            </div>
+            <div class="ap-item">
+              <div class="ap-av">박</div>
+              <div>
+                <div class="ap-name">박도현님</div>
+                <div class="ap-topic">"설득력 있는 보고서 작성법" — 15표</div>
+              </div>
+              <span class="ap-type" style="background:#FEF3C7;color:#92400E">팀장 선정</span>
+            </div>
+          <div class="ap-item"><div class="ap-av">강</div><div><div class="ap-name">강태양님</div><div class="ap-topic">팀장 추가 선정 발표자</div></div><span class="ap-type" style="background:#FEF3C7;color:#92400E">팀장 선정</span></div></div>
+
+          <!-- 팀장 추가 선정 입력 -->
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+            <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px">팀장 — 추가 발표자 선정</div>
+            <div style="display:flex;gap:8px">
+              <select id="addPresenter" style="flex:1;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:&#39;Noto Sans KR&#39;,sans-serif;color:var(--text);outline:none;background:#fff">
+                <option value="">발표자 선택</option>
+                <option>최지우</option><option>한수진</option><option>정우성</option><option>오민지</option><option>강태양</option>
+              </select>
+              <button onclick="addPresenterFn()" style="background:var(--m4);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:&#39;Noto Sans KR&#39;,sans-serif;white-space:nowrap">추가 선정</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 사진 업로드 -->
+      <div class="photo-upload-card">
+        <div class="puc-head">
+          <div class="puc-title">📸 세미나 진행 사진 공유</div>
+          <div class="puc-sub">세미나 진행 사진을 업로드해 팀내에 공유해주세요.<br>전사 피드에도 함께 게시됩니다.</div>
+        </div>
+        <div class="puc-body">
+          <div class="puc-guide">
+            <strong>세미나 진행 가이드</strong><br>
+            ① 발표자가 10~20분 지식 공유 세미나 진행<br>
+            ② 팀원들과 Q&amp;A 시간 (5~10분)<br>
+            ③ 세미나 후 사진 촬영 및 팀내 공유<br>
+            ④ 주요 내용 요약 한 줄 추가 (선택)
+          </div>
+          <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:10px">사진 업로드</div>
+          <label class="photo-drop" onclick="this.querySelector(&#39;input&#39;).click()">
+            <input type="file" accept="image/*" multiple="" style="display:none" onchange="uploadPhotos(this)">
+            <span style="font-size:32px">📷</span>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px">세미나 사진 선택</div>
+              <div style="font-size:12px;color:var(--muted)">클릭하거나 드래그해서 추가 · JPG, PNG</div>
+            </div>
+          </label>
+          <div class="uploaded-grid" id="uploadedPhotos"></div>
+          <div style="margin-top:14px">
+            <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">세미나 요약 한 줄 (선택)</div>
+            <input type="text" id="seminarSummary" style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:10px 14px;font-size:14px;font-family:&#39;Noto Sans KR&#39;,sans-serif;color:var(--text);outline:none;transition:border .2s" placeholder="오늘 세미나에서 배운 핵심 한 줄..." onfocus="this.style.borderColor=&#39;var(--m4)&#39;" onblur="this.style.borderColor=&#39;var(--border)&#39;">
+          </div>
+          <button class="puc-submit" onclick="submitSeminar()">✅ 사진 및 후기 팀내 공유 제출</button>
+          <div class="puc-success" id="pucSuccess">📚 세미나 기록이 팀내에 공유되었습니다! 전사 피드에도 게시됩니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 성장 타임캡슐 배너 -->
+    <div class="capsule-banner">
+      <div class="cb-icon">🌱</div>
+      <div class="cb-content">
+        <div class="cb-title">성장 타임캡슐</div>
+        <div class="cb-desc">Week 2에서 작성된 성장 목표들이 봉인되어 있습니다. 12월 랩업에서 지금의 목표가 얼마나 이루어졌는지 함께 확인합니다.</div>
+        <div class="cb-count">🌱 성장 목표 9개 봉인 완료</div>
+      </div>
+      <button class="cb-peek-btn" onclick="peekCapsule()">살짝 엿보기 👀</button>
+    </div>
+    <div class="capsule-msgs" id="capsuleMsgs">
+      <div class="capsule-msg"><div class="capsule-msg-who">익명 목표 #1</div>"올해는 Python 데이터 분석 자격증을 취득하고, 업무에 실제로 적용하는 것이 목표입니다."</div>
+      <div class="capsule-msg"><div class="capsule-msg-who">익명 목표 #3</div>"퇴근 후 30분이라도 영어 공부. 글로벌 프로젝트에 기여할 수 있는 수준이 되고 싶습니다."</div>
+      <div class="capsule-msg"><div class="capsule-msg-who">익명 목표 #9</div>"올해는 '아니오'를 잘 말하는 것이 목표입니다. 선택과 집중을 통한 성장을 배우겠습니다."</div>
+      <div style="text-align:center;font-size:12px;color:rgba(255,255,255,.35);margin-top:4px">나머지 6개는 12월에 공개됩니다 🔒</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Dashboard
+const DB_H=172;let dbV=true;
+function toggleDB(){
+  const db=document.getElementById('db');const btn=document.getElementById('dbToggleBtn');
+  dbV=!dbV;
+  if(dbV){db.classList.remove('hidden');document.body.style.paddingTop=DB_H+'px';btn.textContent='▲ 대시보드 숨기기';}
+  else{db.classList.add('hidden');document.body.style.paddingTop='0';btn.textContent='▼ 대시보드 보이기';}
+}
+function tMi(b){b.classList.toggle('done');b.textContent=b.classList.contains('done')?'✓':'';}
+function tProg(btn){
+  const d=document.getElementById('progInline');d.classList.toggle('open');
+  btn.textContent=d.classList.contains('open')?'📊 실/본부 접기 ▴':'📊 실/본부 상세 ▾';
+}
+// Week tabs
+function showWeek(n,btn){
+  document.querySelectorAll('.week-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.wn-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('week'+n).classList.add('active');btn.classList.add('active');
+}
+// W1
+function tLike(btn){btn.classList.toggle('liked');const s=btn.querySelector('span');s.textContent=btn.classList.contains('liked')?+s.textContent+1:+s.textContent-1;}
+function tCmt(btn){btn.closest('.lc-footer').nextElementSibling.classList.toggle('open')}
+function addCmt(btn){
+  const row=btn.parentElement;const inp=row.querySelector('.cmt-input');const v=inp.value.trim();if(!v)return;
+  const area=btn.closest('.cmt-area');const item=document.createElement('div');item.className='cmt-item';
+  item.innerHTML=`<div class="ci-av">익</div>${v}`;area.insertBefore(item,row);inp.value='';
+}
+// W2 progress
+const TOTAL=14;let filled=9;
+function buildBar(){
+  const bar=document.getElementById('gbBar');bar.innerHTML='';
+  for(let i=0;i<TOTAL;i++){
+    const s=document.createElement('div');s.className='gb-seg';
+    s.style.flex='1';s.style.margin='0 1px';s.style.borderRadius='4px';
+    s.style.background=i<filled?'#34D399':'rgba(255,255,255,.1)';
+    bar.appendChild(s);
+  }
+  document.getElementById('gbNum').textContent=`${filled} / ${TOTAL}명`;
+}
+buildBar();
+function addGoal(){
+  const inp=document.getElementById('gbInput');const v=inp.value.trim();if(!v)return;
+  const body=document.getElementById('gbBody');const n=body.querySelectorAll('.goal-card').length+1;
+  const d=document.createElement('div');d.className='goal-card';
+  const num=String(n).padStart(2,'0');
+  d.innerHTML=`<div class="gc-num">${num}</div><div class="gc-msg">"${v}"</div><div class="gc-bottom"><span class="gc-tag">나의 목표</span><button class="gc-like" onclick="gcLike(this)">🌱 0</button></div>`;
+  body.appendChild(d);inp.value='';body.scrollTop=body.scrollHeight;
+  filled=Math.min(filled+1,TOTAL);buildBar();
+}
+function gcLike(btn){
+  btn.classList.toggle('on');const p=btn.textContent.split(' ');const n=parseInt(p[1])||0;
+  btn.textContent=`🌱 ${btn.classList.contains('on')?n+1:n-1}`;
+}
+function nominateNext(){
+  const names=['최지우','한수진','정우성','오민지','강태양'];
+  const n=names[Math.floor(Math.random()*names.length)];
+  document.querySelector('.gb-next').innerHTML=`다음 순서: <strong>${n}님</strong> — 올해 나의 성장 목표를 한 줄로 작성해주세요`;
+  alert(`✅ ${n}님을 다음 주자로 지목했습니다!`);
+}
+// W3
+let selectedTopic='기술/개발';
+function selTopic(btn,topic){
+  document.querySelectorAll('.topic-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');selectedTopic=topic;
+}
+function submitKnowledge(){
+  const subj=document.getElementById('w3subject').value.trim();
+  if(!subj){alert('지식 주제를 입력해주세요.');return;}
+  const desc=document.getElementById('w3desc').value.trim();
+  const grid=document.getElementById('knGrid');
+  const card=document.createElement('div');card.className='kn-card';
+  card.innerHTML=`<div class="kn-header"><div style="font-size:14px;font-weight:700;color:var(--m4d)">${selectedTopic}</div><div class="kn-anon">익명</div></div><div class="kn-body"><div class="kn-subject">나는</div><div class="kn-text">"${subj}에 자신있습니다."</div>${desc?`<div class="kn-detail">"${desc}"</div>`:''}</div><div class="kn-footer"><span class="vote-count">💚 0표</span><button class="vote-btn" onclick="castVote(this)">🌱 함께 알고 싶어요!</button></div>`;
+  grid.prepend(card);
+  document.getElementById('w3subject').value='';document.getElementById('w3desc').value='';
+  alert('✅ 익명으로 제출되었습니다!');
+}
+function castVote(btn){
+  btn.classList.toggle('voted');
+  const count=btn.closest('.kn-footer').querySelector('.vote-count');
+  const n=parseInt(count.textContent.match(/\d+/)[0]);
+  count.textContent=`💚 함께 알고 싶어요 ${btn.classList.contains('voted')?n+1:n-1}표`;
+  btn.textContent=btn.classList.contains('voted')?'✅ 신청됨':'🌱 함께 알고 싶어요!';
+}
+// W4
+function addPresenterFn(){
+  const sel=document.getElementById('addPresenter');const name=sel.value;if(!name){alert('발표자를 선택해주세요.');return;}
+  const list=document.querySelector('.additional-presenters');
+  const item=document.createElement('div');item.className='ap-item';
+  item.innerHTML=`<div class="ap-av">${name[0]}</div><div><div class="ap-name">${name}님</div><div class="ap-topic">팀장 추가 선정 발표자</div></div><span class="ap-type" style="background:#FEF3C7;color:#92400E">팀장 선정</span>`;
+  list.appendChild(item);sel.value='';
+  alert(`✅ ${name}님이 추가 발표자로 선정되었습니다!`);
+}
+function uploadPhotos(input){
+  const container=document.getElementById('uploadedPhotos');
+  [...input.files].forEach(file=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      const div=document.createElement('div');div.className='photo-thumb';
+      const img=document.createElement('img');img.src=e.target.result;
+      div.appendChild(img);container.appendChild(div);
+    };
+    r.readAsDataURL(file);
+  });
+}
+function submitSeminar(){
+  const photos=document.getElementById('uploadedPhotos').querySelectorAll('.photo-thumb').length;
+  if(photos===0){alert('세미나 사진을 먼저 업로드해주세요.');return;}
+  document.getElementById('pucSuccess').style.display='block';
+  alert('✅ 세미나 기록이 팀내에 공유되었습니다!');
+}
+// Capsule
+let capsOpen=false;
+function peekCapsule(){
+  capsOpen=!capsOpen;
+  const msgs=document.getElementById('capsuleMsgs');
+  msgs.classList.toggle('open',capsOpen);
+  document.querySelector('.cb-peek-btn').textContent=capsOpen?'닫기 ✕':'살짝 엿보기 👀';
+}
+</script>
+
+
+</body></html>
